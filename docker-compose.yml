@@ -1,0 +1,36 @@
+version: '2'
+services:
+  elasticsearch:
+    image: elasticsearch:2.2
+  #  volumes:
+  #    - "./docker/data/:/usr/share/elasticsearch/data"
+  #  ports:
+  #    - "9200:9200"
+
+  logstash:
+    build:
+      context: .
+      dockerfile: docker/logstash.Dockerfile
+    depends_on:
+      - elasticsearch
+    volumes:
+      - "./docker/logstash/:/conf/:ro"
+    command: --config /conf/logstash.cfg
+    ports:
+      - "8080:8080"
+
+  kibana:
+    depends_on:
+      - elasticsearch
+    image: kibana:4.4
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200/
+    ports:
+      - "5601:5601"
+
+  client:
+    image: nginx
+    volumes:
+      - "./docker/client/:/usr/share/nginx/html/:ro"
+    ports:
+      - "80:80"

@@ -1,0 +1,17 @@
+{
+  "template": "*",
+  "mappings": {
+    "_default_": {
+      "properties": {
+        "geoip": {
+          "type": "object",
+          "properties": {
+            "location": {
+              "type": "geo_point"
+            }
+          }
+        }
+      }
+    }
+  }
+}
