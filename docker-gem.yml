@@ -1,0 +1,5 @@
+gem:
+  image: jruby:1.7.23
+  volumes:
+    - ".:/src/"
+  command: sh -c 'cd /src && gem build logstash-filter-sourcemap.gemspec'
