@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+    <head>
+        <title>test whatever</title>
+        <script src="cookies.min.js"></script>
+        <style>
+            input[type="text"] {
+                width: 400px;
+                font-size: 22px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Press the button to generate the error</h1>
+        <p>POST URL:</p>
+        <p><input type="text" value="http://localhost:8080/" class="js_post-url"></p>
+        <p>Source map URL:</p>
+        <p><input type="text" value="http://localhost:8080/cookies.map" class="js_map-url"></p>
+
+        <input type="button" onclick="docCookies.removeItem('lol');" value="CLICK ME!">
+        <script src="report.js"></script>
+    </body>
+</html>
