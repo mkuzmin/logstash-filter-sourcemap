@@ -25,15 +25,20 @@ class LogStash::Filters::SourceMap < LogStash::Filters::Base
     message = ''
     if exception['type']
       message += exception['type']
-      if exception['module']
-        message += " (#{exception['module']})"
-      end
+      # if exception['module']
+      #   message += " (#{exception['module']})"
+      # end
       message += ': '
     end
     message += exception['value']
 
-    event['message'] = message
+    if exception['stacktrace'] && exception['stacktrace']['frames']
+      exception['stacktrace']['frames'].each do |frame|
+        message += "\n  at #{frame['function']}(#{frame['filename']}:#{frame['lineno']}:#{frame['colno']})"
+      end
+    end
 
+    event['stacktrace'] = message
     filter_matched(event)
   end
 end
