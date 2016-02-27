@@ -34,7 +34,13 @@ class LogStash::Filters::SourceMap < LogStash::Filters::Base
 
     if exception['stacktrace'] && exception['stacktrace']['frames']
       exception['stacktrace']['frames'].each do |frame|
-        message += "\n  at #{frame['function']}(#{frame['filename']}:#{frame['lineno']}:#{frame['colno']})"
+        url = URI.parse(frame['filename'])
+        if url.route_from(event['request']['url']).relative?
+          filename = url.path.to_s
+        else
+          filename = frame['filename']
+        end
+        message += "\n  at #{frame['function']}(#{filename}:#{frame['lineno']}:#{frame['colno']})"
       end
     end
 
