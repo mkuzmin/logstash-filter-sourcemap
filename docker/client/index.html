@@ -2,7 +2,15 @@
 <html>
     <head>
         <title>test whatever</title>
+
+        <script src="https://cdn.ravenjs.com/2.1.0/raven.min.js"></script>
+
         <script src="cookies.min.js"></script>
+
+        <script>
+            Raven.config('http://192.168.99.100:8080/test').install()
+        </script>
+
         <style>
             input[type="text"] {
                 width: 400px;
@@ -18,6 +26,5 @@
         <p><input type="text" value="http://localhost:8080/cookies.map" class="js_map-url"></p>
 
         <input type="button" onclick="docCookies.removeItem('lol');" value="CLICK ME!">
-        <script src="report.js"></script>
     </body>
 </html>

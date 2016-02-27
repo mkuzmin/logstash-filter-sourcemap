@@ -19,7 +19,7 @@ class LogStash::Filters::SourceMap < LogStash::Filters::Base
     if @message
       # Replace the event message with our message as configured in the
       # config file.
-      event['error']['stack'] = @message
+      event['message'] = @message
     end
 
     # filter_matched should go in the last line of our successful code
