@@ -4,9 +4,6 @@ require 'logstash/namespace'
 class LogStash::Filters::SourceMap < LogStash::Filters::Base
 
   config_name 'sourcemap'
-  
-  # Replace the message with this value.
-  config :message, :validate => :string, :default => "Hello World!"
 
   public
   def register
@@ -15,14 +12,28 @@ class LogStash::Filters::SourceMap < LogStash::Filters::Base
 
   public
   def filter(event)
+    return unless event['exception']
 
-    if @message
-      # Replace the event message with our message as configured in the
-      # config file.
-      event['message'] = @message
+    values = event['exception']['values']
+    if values==nil || values.is_a?(Array)==false || values.length!=1 || values[0]['value']==nil
+      @logger.warn('SourceMap filter cannot parse exception', :values => values)
+        event.tag('_sourcemapparsefailure')
+        return
     end
+    exception = values.first
 
-    # filter_matched should go in the last line of our successful code
+    message = ''
+    if exception['type']
+      message += exception['type']
+      if exception['module']
+        message += " (#{exception['module']})"
+      end
+      message += ': '
+    end
+    message += exception['value']
+
+    event['message'] = message
+
     filter_matched(event)
   end
 end
