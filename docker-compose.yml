@@ -34,3 +34,10 @@ services:
       - "./docker/client/:/usr/share/nginx/html/:ro"
     ports:
       - "80:80"
+
+  map-server:
+    image: nginx
+    volumes:
+      - "./docker/sourcemaps/:/usr/share/nginx/html/:ro"
+#    ports:
+#      - "81:80"
