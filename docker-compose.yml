@@ -10,7 +10,7 @@ services:
   logstash:
     build:
       context: .
-      dockerfile: docker/logstash.Dockerfile
+      dockerfile: docker/logstash/Dockerfile
     depends_on:
       - elasticsearch
     volumes:
@@ -41,3 +41,13 @@ services:
       - "./docker/sourcemaps/:/usr/share/nginx/html/:ro"
 #    ports:
 #      - "81:80"
+
+  kibana-config:
+    depends_on:
+      - kibana
+    build:
+      context: .
+      dockerfile: docker/kibana/Dockerfile
+    volumes:
+      - "./docker/kibana:/conf/:ro"
+    command: /conf/upload.sh
